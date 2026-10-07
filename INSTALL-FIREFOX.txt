@@ -1,0 +1,151 @@
+BireLate: installing the Firefox extension
+==========================================
+
+BireLate is released on the Releases page of its GitHub repository, as
+two downloads of the same version:
+
+  BireLate-<version>-win64.zip
+      The BireLate server and its setup. Start with this one.
+
+  BireLate-extension-<version>.xpi
+      The BireLate Firefox extension.
+
+The repository itself is the source code of all of BireLate.
+
+The .xpi file is the BireLate Firefox extension. On its own it does
+nothing: it sends images to the BireLate server, which runs on your own PC
+and comes from BireLate-<version>-win64.zip.
+
+Before you install the extension:
+
+  1. Extract BireLate-<version>-win64.zip and run Setup.bat in it, as the
+     README.md there describes. Setup also registers the browser
+     connection that lets the extension's Start server button launch the
+     server.
+  2. Restart Firefox after Setup has finished.
+  3. You need Firefox 142 or newer (menu > Help > About Firefox).
+
+Save the .xpi in any folder you like and keep it there: method 1 below
+loads it again every time Firefox starts.
+
+The extension is not signed by Mozilla, and release Firefox only installs
+signed extensions permanently. Pick one of the three methods below.
+
+
+Method 1: temporary add-on (any Firefox)
+----------------------------------------
+
+  1. Type about:debugging in the address bar and press Enter.
+  2. Click This Firefox, then Load Temporary Add-on...
+  3. Choose BireLate-extension-<version>.xpi. Firefox accepts the .xpi
+     file directly.
+
+A temporary add-on is removed whenever Firefox closes, so load it again
+each time you start Firefox, including after the restart Setup asks for.
+
+To keep the extension's settings and cached translations between loads,
+open about:config and set both of these preferences to true:
+
+  extensions.webextensions.keepStorageOnUninstall
+  extensions.webextensions.keepUuidOnUninstall
+
+
+Method 2: install the .xpi (Developer Edition, Nightly or ESR)
+--------------------------------------------------------------
+
+Firefox Developer Edition, Nightly and ESR, and unbranded builds of
+Firefox, can install an unsigned extension permanently. Release and Beta
+Firefox cannot: they ignore the preference below.
+
+  1. Open about:config and set xpinstall.signatures.required to false.
+  2. Open about:addons, click the gear icon and choose
+     Install Add-on From File...
+  3. Choose BireLate-extension-<version>.xpi.
+
+
+Method 3: sign it yourself (release Firefox, permanent)
+-------------------------------------------------------
+
+addons.mozilla.org (AMO) signs an UNLISTED add-on for free: it is not
+published on the add-on site, but the signed .xpi installs permanently in
+release Firefox. This method has not been tested with BireLate.
+
+  1. Create a free account on addons.mozilla.org, then create API
+     credentials at
+         https://addons.mozilla.org/developers/addon/api/key/
+     You get a "JWT issuer" and a "JWT secret".
+  2. Install Node.js (https://nodejs.org).
+  3. Put the extension's files in a folder. The .xpi is a zip file: copy
+     it, rename the copy so that it ends in .zip, right-click it and
+     choose Extract All. The folder that holds manifest.json is the one
+     you need. Or use the extension\ folder of BireLate's repository.
+  4. In a Command Prompt, run this, typed as ONE line, with your folder
+     and your two credentials in place of the <...> parts. Keep the
+     quotes around the folder: its path may contain spaces (a copied
+     file is named "... - Copy").
+
+         npx web-ext sign --channel=unlisted --source-dir "<folder>"
+         --api-key <JWT issuer> --api-secret <JWT secret>
+
+  5. web-ext writes the signed .xpi into a web-ext-artifacts folder
+     inside the folder where you ran the command. Install it in
+     about:addons with the gear icon > Install Add-on From File...
+
+Add-on IDs are unique on AMO, so signing fails if the ID birelate@local is
+already taken. Then pick a new ID of the same form (for example
+birelate-something@local) and put it in BOTH places:
+
+  - "id" in the extension's manifest.json, in your folder from step 3;
+  - $ExtensionId in scripts\register-native-host.ps1, in the BireLate
+    folder from the win64 zip.
+
+Then sign again and run Setup.bat again. If the two IDs differ, the Start
+server button cannot reach the server launcher.
+
+
+After installing
+----------------
+
+The BireLate toolbar button starts out inside Firefox's Extensions menu
+(the puzzle-piece icon on the toolbar). Pin it to the toolbar from there so
+the popup is one click away. Then follow "Start translating" in the
+README.md of the BireLate folder.
+
+Without the browser connection (Setup.bat -NoNativeHost), the Start server
+button cannot start the server. Start it with Start BireLate.bat instead,
+and paste the token into the extension: copy the "token" value from
+local\state\popup-token.json in the BireLate folder into the popup's
+Settings > Shared token, as README.md describes under Troubleshooting.
+
+
+Removing the extension
+----------------------
+
+  1. If you changed any of these preferences in about:config, reset them
+     first:
+
+         extensions.webextensions.keepStorageOnUninstall
+         extensions.webextensions.keepUuidOnUninstall
+         xpinstall.signatures.required
+
+     Do this BEFORE removing the extension: while keepStorageOnUninstall
+     is true, removing the extension leaves its settings and cached
+     translations behind in your Firefox profile.
+  2. Remove the extension in about:addons (a temporary add-on: in
+     about:debugging).
+
+To remove the rest of BireLate (the server, its downloads and the browser
+connection), see "Where things are stored, and uninstalling" in README.md.
+
+
+Licence
+-------
+
+BireLate is free software under the GNU General Public License, version 3
+(GPL-3.0). The full text is in LICENSE, next to this file in the BireLate
+folder and in the repository.
+
+The extension is plain JavaScript with no build step, so the .xpi contains
+the extension's complete source code. The source code of all of BireLate,
+server included, is BireLate's GitHub repository; each release is tagged
+there with the source it was built from.

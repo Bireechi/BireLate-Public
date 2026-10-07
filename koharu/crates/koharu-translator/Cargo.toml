@@ -1,0 +1,39 @@
+[package]
+name = "koharu-translator"
+version.workspace = true
+edition.workspace = true
+description = "Local and hosted translation backends for Koharu."
+license.workspace = true
+authors.workspace = true
+readme.workspace = true
+homepage.workspace = true
+repository.workspace = true
+keywords.workspace = true
+publish.workspace = true
+
+[dependencies]
+koharu-config = { workspace = true }
+koharu-ml = { workspace = true }
+koharu-runtime = { workspace = true }
+koharu-secrets = { workspace = true }
+anyhow = { workspace = true }
+clap = { workspace = true }
+futures = { workspace = true }
+reqwest = { workspace = true }
+serde = { workspace = true }
+serde_json = { workspace = true }
+specta = { workspace = true }
+strum = { workspace = true }
+thiserror = { workspace = true }
+tokio = { workspace = true }
+tracing = { workspace = true }
+url = { workspace = true }
+
+[dev-dependencies]
+toml = { workspace = true }
+# `prompt::translations` counts two things it can only report by logging them --
+# whether the reply arrived in input order, and how many ids it placed -- because
+# both are gone from the return value by construction. A duplicate must not
+# perturb either, and this is the only instrument that can check it. `replay.rs`
+# scrapes the same event the same way in production.
+tracing-subscriber = { workspace = true }

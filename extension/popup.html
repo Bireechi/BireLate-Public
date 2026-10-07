@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+
+<header class="head">
+  <div class="brand">
+    <svg class="mark" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+      <rect x="2" y="3" width="20" height="15" rx="3" fill="#2f7cf6"/>
+      <path d="M8 21l3-3H8z" fill="#2f7cf6"/>
+      <text x="7.4" y="14.2" font-size="9" font-weight="700" fill="#fff" text-anchor="middle">あ</text>
+      <text x="16.4" y="14.2" font-size="9" font-weight="700" fill="#fff" text-anchor="middle">A</text>
+    </svg>
+    <span>BireLate</span>
+  </div>
+  <span id="dot" class="dot" title="Server status"></span>
+</header>
+
+<!-- ---------------------------------------------------------------- home -->
+<section id="panel-home" class="panel">
+  <div class="row card">
+    <label for="enableHere">Enable BireLate on this page</label>
+    <input type="checkbox" id="enableHere" class="sw">
+  </div>
+
+  <div class="row card">
+    <label for="autoTranslate">Auto-translate new images</label>
+    <input type="checkbox" id="autoTranslate" class="sw">
+  </div>
+
+  <div id="status" class="status">Checking server…</div>
+
+  <!-- The server has no UI of its own; this card is it. -->
+  <div class="card block gpu">
+    <div class="kv">
+      <span class="k">Models</span>
+      <span class="v" id="modelState">checking…</span>
+    </div>
+
+    <div class="kv gap">
+      <span class="k">VRAM in use</span>
+      <span class="v" id="vramText">—</span>
+    </div>
+    <div class="meter" id="vramMeter"><span id="vramFill"></span></div>
+    <p class="hint" id="vramDevice"></p>
+
+    <div class="count" id="countdown">—</div>
+
+    <div class="acts">
+      <button type="button" id="warmBtn" class="ghost">Warm up</button>
+      <button type="button" id="unloadBtn" class="ghost">Free VRAM now</button>
+    </div>
+
+    <!-- A reading session is the server's lifetime. Stopping it is what clears
+         the cached pages, so the two live on one button. -->
+    <div class="acts gap">
+      <button type="button" id="startBtn" class="ghost">Start server</button>
+      <button type="button" id="stopBtn" class="ghost">Stop &amp; clear</button>
+    </div>
+    <p class="note" id="gpuNote"></p>
+  </div>
+
+  <!-- Context runs across the pages of one SERIES, not across every page the
+       browser has ever translated. The window is keyed on the site and the
+       series path, so moving to a different title starts a different story by
+       itself; resetting is for starting the same title over. -->
+  <div class="card block">
+    <div class="kv">
+      <span class="k">Story context</span>
+      <span class="v" id="storyState">on</span>
+    </div>
+    <p class="hint">Keeps names and honorifics consistent across the pages of one
+      series. Each series gets its own memory, so names learned in one title do
+      not follow you into another. Reset it to make this series start over.</p>
+    <div class="acts">
+      <button type="button" id="resetStoryBtn" class="ghost">Reset story context</button>
+    </div>
+    <p class="note" id="storyNote"></p>
+  </div>
+
+  <!-- The story card's sibling: fixed terms rather than carried precedent.
+       Same per-series key, but deliberately NOT reset by the button above --
+       a reset abandons what the story has learned, never what the reader
+       wrote down. Session-only on purpose: the terms die when the browser
+       closes, exactly as the server's copy dies with the server. -->
+  <div class="card block">
+    <div class="kv">
+      <span class="k">Glossary</span>
+      <span class="v" id="glossaryState">—</span>
+    </div>
+    <p class="hint">Pin how this series' recurring terms are translated — one per
+      line, <code>source = translation</code>, <code>#</code> for comments. Applies
+      to this series only, from the next translated page, and is forgotten when
+      the browser closes.</p>
+    <textarea id="glossaryText" rows="6" spellcheck="false"
+      placeholder="흑월회 = the Black Moon Society&#10;# names, ranks, techniques…"></textarea>
+    <div class="acts">
+      <button type="button" id="glossaryApplyBtn" class="ghost">Apply</button>
+      <button type="button" id="glossaryClearBtn" class="ghost">Clear</button>
+    </div>
+    <p class="note" id="glossaryNote"></p>
+    <div id="glossarySuggest"></div>
+    <p class="hint" id="glossarySuggestHint" hidden>Terms this session has seen
+      rendered more than one way. Pick the wording you prefer — it fills the
+      editor above; Apply commits. You can also Alt-click a lettered term on
+      the page itself.</p>
+  </div>
+
+  <label class="lbl" for="targetLanguage">Target language</label>
+  <select id="targetLanguage">
+    <option value="en-US">English</option>
+    <option value="es-ES">Spanish</option>
+    <option value="fr-FR">French</option>
+    <option value="de-DE">German</option>
+    <option value="pt-BR">Portuguese (BR)</option>
+    <option value="ru-RU">Russian</option>
+    <option value="zh-CN">Chinese (Simplified)</option>
+    <option value="ko-KR">Korean</option>
+  </select>
+
+  <div class="two">
+    <div>
+      <label class="lbl" for="ocr">OCR</label>
+      <select id="ocr">
+        <option value="manga-ocr">Manga OCR (Japanese paged manga only)</option>
+        <option value="baberu-ocr">Baberu OCR (better punctuation)</option>
+        <option value="hunyuan-ocr-1.5">HunyuanOCR (recommended, reads all scripts)</option>
+        <option value="paddleocr-vl-1.6">PaddleOCR-VL (reserve)</option>
+        <option value="ollama-vision">Ollama vision model (experimental)</option>
+      </select>
+    </div>
+    <div>
+      <label class="lbl" for="inpainting">Inpainter</label>
+      <select id="inpainting">
+        <option value="lama">LaMa</option>
+        <option value="aot-inpainting">AOT</option>
+        <option value="flux2-klein">FLUX.2 Klein</option>
+        <option value="rorem-mixed">RORem mixed</option>
+      </select>
+    </div>
+  </div>
+  <!-- Shown when /status reports ocr_substitute: setup declined the HunyuanOCR
+       licence, so the server answers Hunyuan requests with another engine. Shown
+       only while the dropdown is on the requested engine. -->
+  <p class="hint" id="ocrNote" hidden>HunyuanOCR is not installed on this server;
+    <span id="ocrServedBy">another engine</span> is used instead. Run Setup.bat to add it.</p>
+
+  <!-- What this SITE is, shown and overridable. The extension normally works
+       both facts out on its own (script-latch.js), but the detection is a
+       latch: it decides once per site and a wrong first impression sticks.
+       This card is where the reader sees what was decided and corrects it,
+       for this site only. -->
+  <div class="card block">
+    <div class="kv">
+      <span class="k">This site</span>
+      <span class="v" id="siteState">—</span>
+    </div>
+    <p class="hint">Detected from the first pages you translate here. Webtoon
+      sites get split speech bubbles rejoined across image cuts; manga sites
+      never do. If the detection got this site wrong, pick the layout and
+      language yourself — your pick applies to this site only.</p>
+    <div class="two">
+      <div>
+        <label class="lbl" for="profileHere">Layout</label>
+        <select id="profileHere">
+          <option value="">Auto</option>
+          <option value="manga">Manga (paged)</option>
+          <option value="webtoon">Webtoon (strip)</option>
+        </select>
+      </div>
+      <div>
+        <label class="lbl" for="languageHere">Language</label>
+        <select id="languageHere">
+          <option value="">Auto</option>
+          <option value="ja">Japanese</option>
+          <option value="zh">Chinese</option>
+          <option value="ko">Korean</option>
+        </select>
+      </div>
+    </div>
+    <div class="acts">
+      <button type="button" id="redetectBtn" class="ghost">Re-detect this site</button>
+    </div>
+    <p class="note" id="siteNote"></p>
+  </div>
+
+  <div class="row card">
+    <label for="keepArt">Keep the artwork</label>
+    <input type="checkbox" id="keepArt" class="sw">
+  </div>
+  <p class="hint">Draws the translation straight onto the untouched page instead
+    of erasing what was under the text. The eraser's mask is generous, so on
+    signs and captions sitting over artwork it can take line work with it. Inside
+    speech bubbles the Japanese stays visible behind the English, so this is for
+    pages where the artwork matters more than clean balloons.</p>
+
+  <label class="lbl" for="provider">Translation backend</label>
+  <select id="provider">
+    <option value="local">Built-in local engine</option>
+    <option value="ollama">Ollama (shared VRAM)</option>
+  </select>
+
+  <label class="lbl" for="llm">Model</label>
+  <!-- Overwritten by renderLlmHint() on every render; this is only what shows
+       before the first paint. Keep it equal to that function's local branch. -->
+  <input type="text" id="llm" placeholder="blank = gemma4-26b-a4b-it">
+  <p class="hint" id="llmHint"></p>
+</section>
+
+<!-- --------------------------------------------------------------- cache -->
+<section id="panel-cache" class="panel hidden">
+  <p class="hint" id="cacheStats">Reading the cache…</p>
+  <div id="cacheEntries" class="history"></div>
+  <button id="clearCache" class="ghost">Clear cache</button>
+</section>
+
+<!-- ---------------------------------------------------------------- debug -->
+<section id="panel-debug" class="panel hidden">
+  <p class="hint"><b>If the translate button never appears, start here.</b>
+    Leave the manga page open in the tab behind this popup, scroll a page into
+    view, then press the button below. It only measures the page: nothing is
+    sent to the BireLate server, and no image is read or uploaded.</p>
+
+  <button type="button" id="diagnose" class="ghost">Diagnose this page</button>
+
+  <details class="help">
+    <summary>What the answers mean</summary>
+
+    <p><b>No content script in this tab</b> — Firefox is not running this
+      extension on that page at all. Reload the tab and try again; a tab that
+      was already open before the extension was loaded never gets it.</p>
+
+    <p><b>Frames that answered</b> — one card follows per frame. A reader drawn
+      inside an iframe reports as its own frame, with its own host.</p>
+
+    <p><b>Enabled here: no</b> — the page is switched off, and <b>Why</b> names
+      the host that was checked. If that host is not the one you ticked on the
+      Home tab, the reader is coming from a different site than the address bar;
+      turn on <b>Enable on every page</b> in Settings.</p>
+
+    <p><b>Show a button: 0</b> with a large <b>Rejected: too small</b> — lower
+      <b>Minimum image detection size</b> in Settings.</p>
+
+    <p><b>Ready to translate: 0</b> while images show a button — the browser
+      only holds a tiny stand-in for each page. This reader lazy-loads: scroll
+      each page into view and the count rises. <b>lazy: data-src=…</b> under an
+      image below says the same thing, and its <b>natural</b> size next to a
+      much larger <b>rendered</b> size is the proof.</p>
+
+    <p><b>Responsive (srcset / picture)</b> — those images pick their own file
+      from a list. They are translated by silencing that list first; if a
+      translation ever appears to do nothing on such an image, say so with this
+      number.</p>
+
+    <p><b>covered by …</b> on an image — something is painted on top of it to
+      deter saving. That is fine: the button finds images by position, not by
+      what the mouse lands on.</p>
+
+    <p><b>Big &lt;canvas&gt;</b> or <b>CSS background panels</b> above zero with
+      no usable images — the reader does not use &lt;img&gt; at all, and this
+      extension cannot translate it.</p>
+
+    <p><b>Overlay in the DOM: not built yet</b> is normal. It is created the
+      first time you hover an image.</p>
+  </details>
+
+  <div id="diagOut" class="diag"></div>
+</section>
+
+<!-- ------------------------------------------------------------ settings -->
+<section id="panel-settings" class="panel hidden">
+  <h3>Preferences</h3>
+
+  <div class="row card">
+    <label for="enabledEverywhere">Enable on every page</label>
+    <input type="checkbox" id="enabledEverywhere" class="sw">
+  </div>
+  <p class="hint">Use this when the reader lives in a frame from another site,
+    which the per-page switch cannot reach. It also covers frames a page embeds
+    from elsewhere, such as ads — with Auto-translate on, those are translated
+    too.</p>
+
+  <div class="card block">
+    <div class="row bare">
+      <label for="minSize">Minimum image detection size</label>
+      <span class="pill" id="minSizeOut">150px</span>
+    </div>
+    <input type="range" id="minSize" min="50" max="800" step="10">
+  </div>
+
+  <h3>Appearance</h3>
+  <div class="card block">
+    <label class="lbl">Button hover location</label>
+    <div class="corners" id="corners">
+      <button data-corner="top-left"     class="corner" title="Top left"></button>
+      <button data-corner="top-right"    class="corner" title="Top right"></button>
+      <button data-corner="bottom-left"  class="corner" title="Bottom left"></button>
+      <button data-corner="bottom-right" class="corner" title="Bottom right"></button>
+    </div>
+  </div>
+
+  <h3>Server</h3>
+  <label class="lbl" for="serverUrl">BireLate server URL</label>
+  <input type="text" id="serverUrl" placeholder="http://127.0.0.1:8765">
+
+  <label class="lbl" for="token">Shared token <span class="soft">(recommended)</span></label>
+  <input type="text" id="token" placeholder="blank = no auth">
+  <p class="hint">Any website can also reach 127.0.0.1. A token stops a page
+    from quietly driving your translator.</p>
+
+  <h3>Cache</h3>
+  <div class="card block">
+    <label class="lbl" for="cacheMaxEntries">Most pages kept</label>
+    <input type="number" id="cacheMaxEntries" min="1" step="10">
+
+    <label class="lbl" for="cacheMaxMb">Most disk used (MB)</label>
+    <input type="number" id="cacheMaxMb" min="1" step="100">
+
+    <p class="hint">Translations are kept for 24 hours. Whichever limit is
+      reached first drops the pages you have not looked at for longest.</p>
+  </div>
+</section>
+
+<nav class="nav">
+  <button class="tab on" data-panel="home">Home</button>
+  <button class="tab" data-panel="cache">Cache</button>
+  <button class="tab" data-panel="debug">Debug</button>
+  <button class="tab" data-panel="settings">Settings</button>
+</nav>
+
+<script src="cache.js"></script>
+<!-- For PROFILE_FROM_FORMAT and BILINGUAL_OCR: the site card must name the
+     latch's verdict in the same words `resolveSite` acts on, and a copied
+     mapping is how the two would drift. A classic script with a module guard,
+     same as the background's load of it. -->
+<script src="script-latch.js"></script>
+<script src="popup.js"></script>
+</body>
+</html>

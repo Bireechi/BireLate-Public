@@ -1,0 +1,48 @@
+{
+  "_comment": [
+    "Japanese sound effects pinned to an English rendering, applied after the",
+    "LLM so an effect cannot come back as romaji or drift between pages. Applied",
+    "only to text the detector labels as onomatopoeia.",
+    "",
+    "The model usually letters a sound effect in English, but sometimes returns",
+    "romaji instead -- the same source can come back as 'Eek!' once and 'Kya!'",
+    "once. These entries pin the English where it is not in doubt.",
+    "",
+    "origin:  measured  -- the model's own English, pinned so it cannot regress.",
+    "         corrected -- replaces a romaji rendering.",
+    "",
+    "Effects whose English would be a guess are deliberately absent: a wrong pin",
+    "is permanent, a wrong generation is not. Punctuation, symbols and OCR noise",
+    "are absent too."
+  ],
+  "_schema": {
+    "source": "the Japanese as OCR returns it",
+    "target": "the English to letter",
+    "origin": "measured | corrected"
+  },
+  "entries": [
+    { "source": "きゃっ", "target": "Eek!", "origin": "corrected" },
+    { "source": "やっ", "target": "Hup!", "origin": "corrected" },
+    { "source": "ポィ", "target": "*Toss*", "origin": "corrected" },
+    { "source": "ポイ", "target": "*Toss*", "origin": "corrected" },
+
+    { "source": "ピッ", "target": "*Tap*", "origin": "measured" },
+    { "source": "ペラリ", "target": "*flip*", "origin": "measured" },
+    { "source": "ピラ", "target": "*Flip*", "origin": "measured" },
+    { "source": "ゴツゴツ", "target": "*clunk*", "origin": "measured" },
+    { "source": "キリッ", "target": "*Sharp look*", "origin": "measured" },
+    { "source": "キャッシン", "target": "*Grab*", "origin": "measured" },
+    { "source": "パワ", "target": "*Zap*", "origin": "measured" },
+    { "source": "ひよい", "target": "*Hop*", "origin": "measured" },
+    { "source": "モグ", "target": "*Munch*", "origin": "measured" },
+    { "source": "もく", "target": "*Chew*", "origin": "measured" },
+    { "source": "ぺいっ", "target": "*Toss*", "origin": "measured" },
+    { "source": "シャカ", "target": "*Shuffle*", "origin": "measured" },
+    { "source": "シャヤ", "target": "*Shuffle*", "origin": "measured" },
+    { "source": "うる", "target": "*Shuffle*", "origin": "measured" },
+    { "source": "スッ", "target": "*Slide*", "origin": "measured" },
+    { "source": "トン", "target": "Thump.", "origin": "measured" },
+    { "source": "ククク", "target": "Hehehe...", "origin": "measured" },
+    { "source": "ンッッ", "target": "Ngh...", "origin": "measured" }
+  ]
+}

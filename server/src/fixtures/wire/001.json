@@ -1,0 +1,205 @@
+{
+ "regions": [
+  {
+   "x": 459.375,
+   "y": 144.7177734375,
+   "width": 290.625,
+   "height": 51.318359375,
+   "source": "第一百二十三话",
+   "translated": "Chapter 123",
+   "fit_x": 459.375,
+   "fit_y": 144.7177734375,
+   "fit_width": 290.625,
+   "fit_height": 51.318359375,
+   "source_language": "zh-CN",
+   "target_language": "en-US",
+   "detection_confidence": 0.2578125,
+   "ocr_confidence": 0.99955285,
+   "direction": "horizontal",
+   "writing_mode": "horizontal",
+   "region_kind": "dev.koharu.region.text",
+   "label": "text",
+   "role": "free-text",
+   "font_size": 51.0,
+   "color": [
+    241,
+    129,
+    19,
+    255
+   ]
+  },
+  {
+   "x": 379.6875,
+   "y": 316.12109375,
+   "width": 407.8125,
+   "height": 53.37109375,
+   "source": "雾海孤舟夜渡寒江",
+   "translated": "A Lone Boat Crosses the Cold River by Night",
+   "fit_x": 379.6875,
+   "fit_y": 316.12109375,
+   "fit_width": 407.8125,
+   "fit_height": 53.37109375,
+   "source_language": "zh-CN",
+   "target_language": "en-US",
+   "detection_confidence": 0.25585938,
+   "ocr_confidence": 0.9994354,
+   "direction": "horizontal",
+   "writing_mode": "horizontal",
+   "region_kind": "dev.koharu.region.text",
+   "label": "text",
+   "role": "free-text",
+   "font_size": 52.0,
+   "color": [
+    247,
+    127,
+    11,
+    255
+   ],
+   "refused": "the same text is lettered by an overlapping region"
+  },
+  {
+   "x": 356.25,
+   "y": 322.279296875,
+   "width": 478.125,
+   "height": 498.814453125,
+   "source": "雾海孤舟夜渡寒江\n编创组：甲乙丙 tab 东篱 秋水\n总编剧：方圆\n主笔：糯米 橘子√ 小舟\n助理：南风 青梅竹马 不吃香菜\n雨后 PC 墨鱼丸 山茶\n责编：汽水 北窗月\n监制：周一 吴同学\n出品人：某某",
+   "translated": "A Lone Boat Crosses the Cold River by Night\nCreation Team: Jia Yi Bing tab Dong Li Qiu Shui\nHead Writer: Fang Yuan\nMain Artist: Nuo Mi Ju Zi Xiao Zhou\nAssistants: Nan Feng Qing Mei Zhu Ma Bu Chi Xiang Cai\nYu Hou PC Mo Yu Wan Shan Cha\nEditor: Qi Shui Bei Chuang Yue\nSupervisors: Zhou Yi Wu Tong Xue\nProducer: Mou Mou",
+   "fit_x": 356.25,
+   "fit_y": 322.279296875,
+   "fit_width": 478.125,
+   "fit_height": 498.814453125,
+   "source_language": "zh-CN",
+   "target_language": "en-US",
+   "detection_confidence": 0.52734375,
+   "ocr_confidence": 0.9958314,
+   "direction": "horizontal",
+   "writing_mode": "horizontal",
+   "region_kind": "dev.koharu.region.text",
+   "label": "text",
+   "role": "free-text",
+   "font_size": 92.0,
+   "color": [
+    255,
+    255,
+    255,
+    255
+   ]
+  },
+  {
+   "x": 459.375,
+   "y": 1904.9375,
+   "width": 84.375,
+   "height": 32.84375,
+   "source": "穆叶",
+   "translated": "Mu Ye",
+   "fit_x": 459.375,
+   "fit_y": 1904.9375,
+   "fit_width": 84.375,
+   "fit_height": 32.84375,
+   "source_language": "zh-CN",
+   "target_language": "en-US",
+   "detection_confidence": 0.27734375,
+   "ocr_confidence": 0.7307869,
+   "direction": "horizontal",
+   "writing_mode": "horizontal",
+   "region_kind": "dev.koharu.region.text",
+   "label": "text",
+   "role": "free-text",
+   "font_size": 34.0,
+   "color": [
+    255,
+    205,
+    230,
+    255
+   ]
+  }
+ ],
+ "ms": 14273,
+ "untranslated": [],
+ "dropped": [],
+ "split_fragments": [],
+ "skipped": [],
+ "truncated": false,
+ "duplicate_ids": 0,
+ "out_of_range_ids": 0,
+ "stages": [
+  {
+   "stage": "detection",
+   "model": "koharu-layout-rfdetr-seg-2xl",
+   "ms": 1247,
+   "wait_ms": 0
+  },
+  {
+   "stage": "ocr",
+   "model": "hunyuan-ocr-1.5",
+   "ms": 2389,
+   "wait_ms": 77
+  },
+  {
+   "stage": "translation",
+   "model": "local",
+   "ms": 8096,
+   "wait_ms": 87
+  },
+  {
+   "stage": "inpainting",
+   "model": "lama",
+   "ms": 10289,
+   "wait_ms": 9695
+  }
+ ],
+ "stages_selected": [
+  "detection",
+  "ocr",
+  "translation",
+  "inpainting"
+ ],
+ "layout_warnings": [],
+ "rendered_text": [
+  {
+   "region": 0,
+   "font_size": 41.47007,
+   "chars": 10,
+   "x": 459.375,
+   "y": 144.71777,
+   "width": 290.625,
+   "height": 51.31836,
+   "placed_x": 459.39218,
+   "placed_y": 152.00195,
+   "placed_width": 290.59064,
+   "placed_height": 36.75,
+   "placed_angle": 0.0
+  },
+  {
+   "region": 2,
+   "font_size": 28.864225,
+   "chars": 251,
+   "x": 356.25,
+   "y": 322.2793,
+   "width": 478.125,
+   "height": 498.81445,
+   "placed_x": 360.5699,
+   "placed_y": 333.68616,
+   "placed_width": 469.4852,
+   "placed_height": 476.0007,
+   "placed_angle": 0.0
+  },
+  {
+   "region": 3,
+   "font_size": 32.959534,
+   "chars": 4,
+   "x": 459.375,
+   "y": 1904.9375,
+   "width": 84.375,
+   "height": 32.84375,
+   "placed_x": 459.3819,
+   "placed_y": 1906.875,
+   "placed_width": 84.361176,
+   "placed_height": 28.96875,
+   "placed_angle": 0.0
+  }
+ ],
+ "source_script": "zh",
+ "edge_hints": [],
+ "story_context": null
+}

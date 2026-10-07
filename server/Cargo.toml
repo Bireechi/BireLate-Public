@@ -1,0 +1,50 @@
+[package]
+name = "birelate-server"
+version = "0.1.0"
+edition = "2024"
+publish = false
+license = "GPL-3.0-only"
+
+# This directory is the source of truth. scripts\build-koharu.ps1 junctions it
+# into the Koharu tree as crates\birelate-server, so the workspace's
+# members = ["crates/*"] picks it up and the build happens under the short path
+# MAX_PATH forces on the -sys crates.
+
+[dependencies]
+koharu-config = { workspace = true }
+koharu-ml = { workspace = true }
+koharu-pipeline = { workspace = true }
+koharu-renderer = { workspace = true }
+# `Store::configure` for --store-dir, and the download events logged at startup.
+koharu-runtime = { workspace = true }
+koharu-scene = { workspace = true }
+koharu-translator = { workspace = true }
+
+anyhow = { workspace = true }
+# `Committer` is an #[async_trait] trait, so implementing it needs the macro.
+async-trait = { workspace = true }
+base64 = { workspace = true }
+# Constant-time digest comparison for the shared token; no `subtle` needed.
+blake3 = { workspace = true }
+clap = { workspace = true }
+# `FutureExt::catch_unwind`, so a panic in a model run becomes a 500 rather than
+# a dropped connection. Already a koharu-pipeline dependency, so it costs nothing.
+futures = { workspace = true }
+# Must be the workspace pin so we share koharu-renderer's `image` instance.
+image = { workspace = true }
+serde = { workspace = true }
+serde_json = { workspace = true }
+tokio = { workspace = true }
+tracing = { workspace = true }
+tracing-subscriber = { workspace = true }
+url = { workspace = true }
+# `rand` is not a workspace dependency; uuid v4 is, and is fine for a token.
+uuid = { workspace = true }
+
+# Not workspace dependencies -- these exist only transitively in Cargo.lock.
+axum = { version = "0.8", features = ["multipart"] }
+tower-http = { version = "0.6", features = ["trace"] }
+
+[dev-dependencies]
+# ServiceExt::oneshot, so router tests need no listener.
+tower = { version = "0.5", features = ["util"] }

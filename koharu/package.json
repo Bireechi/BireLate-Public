@@ -1,0 +1,22 @@
+{
+  "workspaces": [
+    "packages/*"
+  ],
+  "scripts": {
+    "dev": "tauri dev",
+    "build": "tauri build --no-bundle",
+    "lint": "bun run --filter '@koharu/*' lint",
+    "test": "bun run --filter @koharu/app test",
+    "sponsors": "cd .github/sponsorkit && sponsorkit --force",
+    "format": "oxfmt packages tests package.json .oxfmtrc.json .vscode",
+    "check": "oxfmt --check packages tests package.json .oxfmtrc.json .vscode"
+  },
+  "devDependencies": {
+    "@tauri-apps/cli": "^2.11.4",
+    "@types/node": "^26.1.1",
+    "git-cliff": "^2.13.1",
+    "oxfmt": "^0.56.0",
+    "sponsorkit": "^17.1.1",
+    "typescript": "^6.0.3"
+  }
+}

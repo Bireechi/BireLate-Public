@@ -1,0 +1,323 @@
+:root {
+  --bg: #eef1f5;
+  --card: #ffffff;
+  --ink: #1a1d21;
+  --soft: #6b7480;
+  --line: #d9dee5;
+  --accent: #2f7cf6;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  width: 330px;
+  margin: 0;
+  padding: 0 0 52px;
+  background: var(--bg);
+  color: var(--ink);
+  font: 13px/1.4 system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+
+/* header ------------------------------------------------------------------ */
+.head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 14px;
+}
+
+.brand { display: flex; align-items: center; gap: 9px; font-weight: 700; font-size: 14px; }
+.mark { width: 30px; height: 30px; flex: 0 0 auto; }
+
+.dot {
+  width: 10px; height: 10px; border-radius: 50%;
+  background: var(--soft); flex: 0 0 auto;
+}
+.dot.up { background: #16a34a; }
+.dot.down { background: #dc2626; }
+
+/* panels ------------------------------------------------------------------ */
+.panel { padding: 0 14px; }
+.hidden { display: none; }
+
+h3 {
+  margin: 16px 0 8px;
+  font-size: 11px;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  color: var(--soft);
+}
+
+.card {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 9px;
+  padding: 10px 12px;
+}
+
+.block { margin-bottom: 10px; }
+
+.row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 8px;
+}
+
+.row.bare { border: 0; padding: 0; margin-bottom: 8px; background: none; }
+.row label { cursor: pointer; }
+
+.lbl { display: block; margin: 12px 0 5px; font-size: 12px; color: var(--soft); }
+.soft { color: var(--soft); font-weight: 400; }
+
+select, input[type="text"], input[type="number"], textarea {
+  width: 100%;
+  padding: 8px 9px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--card);
+  color: var(--ink);
+  font: inherit;
+}
+
+/* The glossary editor. Monospace so `source = translation` columns read as
+ * columns; resize locked to vertical because the popup's width is the layout. */
+textarea { font-family: ui-monospace, Consolas, monospace; font-size: 12px; resize: vertical; }
+
+.two { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+
+.hint { margin: 6px 0 0; font-size: 11px; color: var(--soft); }
+
+.status {
+  margin: 4px 0 2px;
+  padding: 7px 10px;
+  border-radius: 8px;
+  background: #e3e8ef;
+  font-size: 12px;
+  color: var(--soft);
+}
+.status.bad { background: #fde8e8; color: #a51b1b; }
+.status.good { background: #e6f5ec; color: #14663a; }
+
+/* server state ------------------------------------------------------------ */
+.gpu { margin-top: 8px; }
+
+.kv {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.k { font-size: 12px; color: var(--soft); }
+.v { font-size: 12px; font-weight: 600; font-variant-numeric: tabular-nums; }
+.v.good { color: #14663a; }
+.v.warn { color: #a15c00; }
+.v.bad  { color: #a51b1b; }
+
+.kv.gap { margin-top: 10px; }
+
+.meter {
+  height: 6px;
+  margin: 6px 0 0;
+  border-radius: 4px;
+  background: #e3e8ef;
+  overflow: hidden;
+}
+.meter > span {
+  display: block;
+  width: 0;
+  height: 100%;
+  background: var(--accent);
+  transition: width 220ms ease-out;
+}
+.meter.hot > span { background: #dc2626; }
+
+.count {
+  margin-top: 10px;
+  font-size: 12px;
+  color: var(--soft);
+  font-variant-numeric: tabular-nums;
+}
+
+.acts { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 10px; }
+.acts .ghost { margin-top: 0; }
+.ghost[disabled] { opacity: .5; cursor: default; }
+/* Needed for the same reason as the rule above it: the bare `select` rule sets
+ * colour and background as author-origin declarations, which beat Gecko's UA
+ * `:disabled` styling whatever its specificity, and Firefox dims a disabled
+ * <select> not at all. Without this the Inpainter looks live while Keep the
+ * artwork holds it inert, and the only feedback is a dropdown that will not
+ * open. */
+select:disabled { opacity: .5; cursor: default; }
+
+.note { margin: 8px 0 0; min-height: 14px; font-size: 11px; color: var(--soft); }
+.note.bad { color: #a51b1b; }
+
+/* switch ------------------------------------------------------------------ */
+.sw {
+  appearance: none;
+  width: 38px; height: 21px;
+  border-radius: 11px;
+  background: #c7ced8;
+  position: relative;
+  cursor: pointer;
+  flex: 0 0 auto;
+  transition: background 130ms;
+}
+.sw:checked { background: var(--accent); }
+.sw::after {
+  content: "";
+  position: absolute;
+  top: 2px; left: 2px;
+  width: 17px; height: 17px;
+  border-radius: 50%;
+  background: #fff;
+  transition: transform 130ms;
+}
+.sw:checked::after { transform: translateX(17px); }
+
+/* range ------------------------------------------------------------------- */
+input[type="range"] { width: 100%; accent-color: var(--accent); }
+
+.pill {
+  padding: 2px 8px;
+  border-radius: 10px;
+  background: #e3e8ef;
+  font-size: 11px;
+  color: var(--soft);
+}
+
+/* corner picker ----------------------------------------------------------- */
+.corners { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; }
+
+.corner {
+  height: 34px;
+  border: 1px solid var(--line);
+  border-radius: 7px;
+  background: #f6f8fa;
+  cursor: pointer;
+  position: relative;
+}
+.corner::before {
+  content: "";
+  position: absolute;
+  width: 9px; height: 9px;
+  border-radius: 2px;
+  background: #b9c1cc;
+}
+.corner[data-corner="top-left"]::before     { top: 5px; left: 5px; }
+.corner[data-corner="top-right"]::before    { top: 5px; right: 5px; }
+.corner[data-corner="bottom-left"]::before  { bottom: 5px; left: 5px; }
+.corner[data-corner="bottom-right"]::before { bottom: 5px; right: 5px; }
+.corner.on { border-color: var(--accent); background: #e8f0fe; }
+.corner.on::before { background: var(--accent); }
+
+/* history ----------------------------------------------------------------- */
+.history { display: flex; flex-direction: column; gap: 6px; margin-top: 12px; }
+
+.item {
+  display: flex;
+  justify-content: space-between;
+  padding: 8px 10px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--card);
+  font-size: 12px;
+}
+.item span { color: var(--soft); }
+
+.empty { padding: 22px 0; text-align: center; color: var(--soft); }
+
+.ghost {
+  width: 100%;
+  margin-top: 10px;
+  padding: 8px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--card);
+  color: var(--soft);
+  font: inherit;
+  cursor: pointer;
+}
+
+/* diagnostics ------------------------------------------------------------- */
+.diag { margin-top: 4px; }
+
+/* Collapsed by default: it is a reference for the moment something is wrong,
+   not something to read past on the way to the button. */
+.help {
+  margin-top: 10px;
+  padding: 8px 10px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--card);
+  font-size: 11px;
+  color: var(--soft);
+}
+.help > summary {
+  cursor: pointer;
+  font-weight: 600;
+  color: var(--ink);
+  list-style: none;
+}
+.help > summary::before { content: "▸ "; }
+.help[open] > summary::before { content: "▾ "; }
+.help > summary::-webkit-details-marker { display: none; }
+.help p { margin: 8px 0 0; }
+.help b { color: var(--ink); }
+
+.diag-h {
+  margin-bottom: 6px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: .04em;
+  text-transform: uppercase;
+  color: var(--soft);
+}
+
+/* Every value in this panel comes from the page, so it is set with textContent
+   and allowed to break anywhere rather than widening the popup. */
+.diag .kv { align-items: flex-start; margin-top: 3px; }
+.diag .v { font-weight: 500; text-align: right; overflow-wrap: anywhere; }
+
+.diag-img {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  margin-top: 8px;
+  padding: 7px 8px;
+  border: 1px solid var(--line);
+  border-radius: 7px;
+  background: #f6f8fa;
+  font-size: 11px;
+  overflow-wrap: anywhere;
+}
+.diag-img span { color: var(--soft); }
+.diag-img .warn { color: #a15c00; }
+
+/* nav --------------------------------------------------------------------- */
+.nav {
+  position: fixed;
+  left: 0; right: 0; bottom: 0;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  border-top: 1px solid var(--line);
+  background: var(--card);
+}
+
+.tab {
+  padding: 12px 0;
+  border: 0;
+  background: none;
+  color: var(--soft);
+  font: 600 11px system-ui, sans-serif;
+  cursor: pointer;
+}
+.tab.on { color: var(--accent); }
+
+/* glossary suggestions */
+#glossarySuggest .item { display: block; padding: 8px 0; }
+.suggest-source { color: var(--soft); font-size: 11px; margin-bottom: 4px; word-break: break-all; }
+.suggest-pick { margin: 2px 6px 2px 0; }

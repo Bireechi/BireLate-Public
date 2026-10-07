@@ -1,0 +1,12 @@
+{
+  "koharu_root": "koharu",
+  "bin": "bin",
+  "packages": "local/runtime/koharu-packages",
+  "cuda_bootstrap": "local/runtime/cuda-bootstrap",
+  "llama_ocr": "local/runtime/llama-ocr",
+  "python_ocr": "local/runtime/python/python.exe",
+  "hunyuan_gguf": "local/models/hunyuan-gguf",
+  "hunyuan_template": "local/models/hunyuan-gguf/chat_template.jinja",
+  "downloads": "local/downloads",
+  "state": "local/state"
+}

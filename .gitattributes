@@ -1,0 +1,29 @@
+# Normalise to LF in the repository, check out native on Windows.
+* text=auto
+
+# PowerShell is happiest with CRLF on disk.
+*.ps1 text eol=crlf
+
+# Patches must keep their exact bytes. Let git rewrite line endings here and
+# `git apply` starts failing on context mismatch for no visible reason.
+*.patch -text
+
+*.png binary
+
+# cmd.exe misparses labels and blocks in LF batch files.
+*.bat text eol=crlf
+
+# Notepad-friendly for recipients.
+INSTALL-FIREFOX.txt text eol=crlf
+
+# Left out of the source zip (`git archive`) but kept in the repository, so that a
+# vendor-branch import still merges cleanly. All of it is upstream Koharu's and none of it
+# is a build input; THIRD-PARTY-NOTICES.md says what it is and why it is not shipped:
+#   - the website documentation: its screenshots show copyrighted comic artwork;
+#   - the benchmark fixtures: comic pages, read only by koharu-ml's benches and tests;
+#   - orphan .pyc files, compiled from Python scripts upstream had already deleted;
+#   - a script that downloads comic artwork.
+koharu/docs export-ignore
+koharu/crates/koharu-ml/benches/fixtures/** export-ignore
+koharu/scripts/__pycache__ export-ignore
+koharu/scripts/download_bluearchive_comics.ts export-ignore

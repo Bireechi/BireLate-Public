@@ -1,0 +1,7 @@
+# Created on first run: what setup.ps1 and the server download, plus state.
+/local/
+# The built server and DLL, copied here after a build (see BUILDING.md).
+/bin/
+# Created by the build scripts: a junction back to server/.
+/koharu/crates/birelate-server
+*.token

@@ -1,0 +1,68 @@
+{
+  "manifest_version": 3,
+  "name": "BireLate",
+  "version": "0.1.0",
+  "description": "Translate manga images in place using a local BireLate server. No cloud APIs.",
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "birelate@local",
+      "strict_min_version": "142.0",
+      "data_collection_permissions": {
+        "required": [
+          "none"
+        ]
+      }
+    }
+  },
+  "permissions": [
+    "storage",
+    "contextMenus",
+    "activeTab",
+    "alarms",
+    "unlimitedStorage",
+    "nativeMessaging"
+  ],
+  "host_permissions": [
+    "http://127.0.0.1/*",
+    "http://localhost/*",
+    "<all_urls>"
+  ],
+  "background": {
+    "scripts": [
+      "cache.js",
+      "seam.js",
+      "story.js",
+      "glossary.js",
+      "script-latch.js",
+      "boxedit.js",
+      "background.js"
+    ]
+  },
+  "action": {
+    "default_popup": "popup.html",
+    "default_title": "BireLate",
+    "default_icon": {
+      "48": "icons/icon-48.png",
+      "96": "icons/icon-96.png"
+    }
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "<all_urls>"
+      ],
+      "js": [
+        "glossary.js",
+        "seam.js",
+        "boxedit.js",
+        "content.js"
+      ],
+      "css": [
+        "content.css"
+      ],
+      "run_at": "document_idle",
+      "all_frames": true,
+      "match_about_blank": true
+    }
+  ]
+}

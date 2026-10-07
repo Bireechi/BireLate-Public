@@ -1,0 +1,205 @@
+{
+ "regions": [
+  {
+   "x": 513.28125,
+   "y": 570.96875,
+   "width": 236.71875,
+   "height": 52.9375,
+   "source": "称号：青衫",
+   "translated": "Title: Qing Shan",
+   "fit_x": 513.28125,
+   "fit_y": 570.96875,
+   "fit_width": 236.71875,
+   "fit_height": 52.9375,
+   "source_language": "zh-CN",
+   "target_language": "en-US",
+   "detection_confidence": 0.43359375,
+   "ocr_confidence": 0.9994684,
+   "direction": "horizontal",
+   "writing_mode": "horizontal",
+   "region_kind": "dev.koharu.region.text",
+   "label": "text",
+   "role": "free-text",
+   "font_size": 51.0,
+   "color": [
+    248,
+    141,
+    33,
+    255
+   ]
+  },
+  {
+   "x": 508.59375,
+   "y": 733.5625,
+   "width": 208.59375,
+   "height": 52.9375,
+   "source": "状态激活！",
+   "translated": "Status Activated!",
+   "fit_x": 508.59375,
+   "fit_y": 733.5625,
+   "fit_width": 208.59375,
+   "fit_height": 52.9375,
+   "source_language": "zh-CN",
+   "target_language": "en-US",
+   "detection_confidence": 0.25585938,
+   "ocr_confidence": 0.99700874,
+   "direction": "horizontal",
+   "writing_mode": "horizontal",
+   "region_kind": "dev.koharu.region.text",
+   "label": "text",
+   "role": "free-text",
+   "font_size": 51.0,
+   "color": [
+    247,
+    137,
+    27,
+    255
+   ],
+   "occluded_by": "unread-box"
+  },
+  {
+   "x": 173.4375,
+   "y": 786.5,
+   "width": 900.0,
+   "height": 181.5,
+   "source": "当前效果：每当你在夜晚独自赶路时，脚下会自动亮起一盏引路灯笼，照亮前方十步之内的道路。在灯笼熄灭之前，你的移动速度将会",
+   "translated": "Current Effect: Whenever you travel alone at night, a guiding lantern automatically lights up at your feet, illuminating the road within ten paces ahead. Until the lantern goes out, your movement speed will",
+   "fit_x": 173.4375,
+   "fit_y": 786.5,
+   "fit_width": 900.0,
+   "fit_height": 181.5,
+   "source_language": "zh-CN",
+   "target_language": "en-US",
+   "detection_confidence": 0.42382812,
+   "ocr_confidence": 0.9867962,
+   "direction": "horizontal",
+   "writing_mode": "horizontal",
+   "region_kind": "dev.koharu.region.text",
+   "label": "text",
+   "role": "free-text",
+   "font_size": 52.0,
+   "color": [
+    0,
+    67,
+    65,
+    255
+   ]
+  }
+ ],
+ "ms": 1299,
+ "untranslated": [],
+ "dropped": [],
+ "split_fragments": [],
+ "skipped": [],
+ "truncated": false,
+ "duplicate_ids": 0,
+ "out_of_range_ids": 0,
+ "stages": [
+  {
+   "stage": "detection",
+   "model": "koharu-layout-rfdetr-seg-2xl",
+   "ms": 198,
+   "wait_ms": 0
+  },
+  {
+   "stage": "ocr",
+   "model": "hunyuan-ocr-1.5",
+   "ms": 349,
+   "wait_ms": 0
+  },
+  {
+   "stage": "translation",
+   "model": "local",
+   "ms": 553,
+   "wait_ms": 0
+  },
+  {
+   "stage": "inpainting",
+   "model": "lama",
+   "ms": 701,
+   "wait_ms": 553
+  }
+ ],
+ "stages_selected": [
+  "detection",
+  "ocr",
+  "translation",
+  "inpainting"
+ ],
+ "layout_warnings": [],
+ "rendered_text": [
+  {
+   "region": 0,
+   "font_size": 28.57653,
+   "chars": 14,
+   "x": 513.28125,
+   "y": 570.96875,
+   "width": 236.71875,
+   "height": 52.9375,
+   "placed_x": 513.31104,
+   "placed_y": 584.39844,
+   "placed_width": 236.65921,
+   "placed_height": 26.078125,
+   "placed_angle": 0.0
+  },
+  {
+   "region": 1,
+   "font_size": 25.12928,
+   "chars": 16,
+   "x": 508.59375,
+   "y": 733.5625,
+   "width": 208.59375,
+   "height": 52.9375,
+   "placed_x": 536.17426,
+   "placed_y": 733.56305,
+   "placed_width": 153.43277,
+   "placed_height": 52.936386,
+   "placed_angle": 0.0
+  },
+  {
+   "region": 2,
+   "font_size": 31.228775,
+   "chars": 174,
+   "x": 173.4375,
+   "y": 786.5,
+   "width": 900.0,
+   "height": 181.5,
+   "placed_x": 187.75009,
+   "placed_y": 786.5353,
+   "placed_width": 871.3748,
+   "placed_height": 181.42938,
+   "placed_angle": 0.0
+  }
+ ],
+ "source_script": "zh",
+ "edge_hints": [
+  {
+   "x": 171.09375,
+   "y": 726.0,
+   "width": 907.03125,
+   "height": 234.4375,
+   "edge": "bottom",
+   "score": 0.16015625,
+   "spans": false
+  },
+  {
+   "x": 578.90625,
+   "y": 790.28125,
+   "width": 489.84375,
+   "height": 173.9375,
+   "edge": "bottom",
+   "score": 0.12158203,
+   "spans": false
+  },
+  {
+   "x": 175.78125,
+   "y": 790.28125,
+   "width": 527.34375,
+   "height": 173.9375,
+   "edge": "bottom",
+   "score": 0.12158203,
+   "spans": false
+  }
+ ],
+ "story_context": null
+}
